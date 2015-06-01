@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Zefo - Zero Effort</title>
+		<meta name = "keywords" content = "zero effort, second hand goods, furniture , buyer, seller" /> 
+		<meta name = "description" content = "On stop solution for all large items" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+		<script src = "http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	</head>
+
+	<style>
+		#mainWrapper{
+			width: 100%;
+			height: 100%;
+			margin: 0 auto;
+			width: 100%;
+			font-family: Raleway, sans-serif
+		}
+		.logo-wrap{
+			text-align: center;
+			max-height: 200px;
+			margin-bottom: 40px;
+
+		}
+		.logo-wrap img{
+			max-width: 250px;
+		}
+		.alert{
+			text-align: center;
+			display: none;
+		}
+
+	</style>
+	<script>
+	$( document ).ready(function() {
+    		var zefo = new zefoClass();
+    		zefo.comingSoon();
+
+		});	
+
+	var zefoClass = function (){
+
+		function validateEmail(email) {
+		    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		    return re.test(email);
+		}
+		var urlZefo = "http://ec2-52-74-232-36.ap-southeast-1.compute.amazonaws.com:8080/guest";
+		function subscribe(email){
+			console.log("subscribe");
+			var dataToSend = {
+				"emailId" : email
+			};
+
+			$.ajax({
+				url: urlZefo,
+				type: "POST",
+				contentType: 'application/json',
+				data: dataToSend,
+				success: function(data){
+						$(".alert-success").show();
+						$(".alert-danger").hide();
+					},
+				error: function(data){
+						showError("Can't Subscribe dude to some random glitch.");
+					}
+				});
+		}
+
+		function showError(msg){
+			$(".alert-danger").html("Snap! " + msg);
+			
+			$(".alert-success").hide();
+			$(".alert-danger").show();
+		}
+
+		this.comingSoon = function(){
+			$(".btn").bind("click", function(){
+				
+				var email = $("input").val();
+				if(email){
+					validateEmail(email)? subscribe(email) : showError("Plese enter a valid email address.") ;
+				}
+			});
+		}
+	};
+	</script>
+	<body>
+
+	<div id = "mainWrapper">
+		<div class = "logo-wrap row">
+			<img src="img/zefo-logo.png">
+			<p>Coming Soon! Subscribe to stay updated.</p>
+		</div>
+		<div class = "subscribe-wrapper row">
+			<div class="alert alert-success row" role="alert">Thanks for Subscribing :) </div>
+			<div class="alert alert-danger row" role="alert">Snap! Please enter a valid email address.  </div>
+			<div class = "col-md-4">
+			</div>
+			 <div class="col-lg-6 col-md-4">
+			    <div class="input-group">
+			      <input type="email" class="form-control" placeholder="happy@gozefo.com">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="button">Subscribe!</button>
+			      </span>
+			    </div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+			</div><!-- /.row -->
+			<div class = "col-md-4">
+			</div>
+		</div>
+	</div>
+	</body>
+</html>
